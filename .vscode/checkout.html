@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BearBite - Checkout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>BearBite Checkout</h1>
+    </header>
+
+    <div class="container">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <h3 id="totalAmount"></h3>
+        <button onclick="showPopUp()">Confirm Order</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopUp()">&times;</span>
+            <h2>A dasher has been assigned!</h2>
+            <img src="images/food_delivery.gif" alt="Delivery in progress" class="map-image">
+            <button onclick="confirmOrder()">Confirm</button> <!-- Add a Confirm button -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Function to display items in the cart
+        function displayCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsDiv = document.getElementById('cartItems');
+            const totalAmountDiv = document.getElementById('totalAmount');
+            cartItemsDiv.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div class="menu-item" onclick="removeFromCart(${index})">
+                        ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}
+                    </div>
+                `;
+                cartItemsDiv.appendChild(itemDiv);
+                total += item.price * item.quantity;
+            });
+
+            totalAmountDiv.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+        }
+
+        // Function to remove an item from the cart
+        function removeFromCart(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        // Function to confirm the order
+        function confirmOrder() {
+            // Clear the cart
+            localStorage.removeItem('cart');
+            displayCart(); // Refresh the cart display
+            closePopUp(); // Close the popup
+            alert('Your order has been confirmed!'); // Optional: Show confirmation message
+        }
+
+        // Call displayCart on page load
+        window.onload = displayCart;
+    </script>
+</body>
+</html>

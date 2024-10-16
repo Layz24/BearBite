@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BearBite - Order</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="checkout.html">Checkout</a>
+            <a href="login.html">Login</a>
+            <input type="text" id="searchBar" placeholder="Search..." onkeyup="searchMenu()">
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Our Menu</h2>
+        <div id="menuGrid" class="menu-grid">
+            <div class="menu-item" onclick="addToCart('Pizza - $10')">Pizza - $10</div>
+            <div class="menu-item" onclick="addToCart('Burger - $8')">Burger - $8</div>
+            <div class="menu-item" onclick="addToCart('Sushi - $12')">Sushi - $12</div>
+            <div class="menu-item" onclick="addToCart('Salad - $7')">Salad - $7</div>
+        
+    <footer>
+        <a href="checkout.html" class="checkout-button">Go to Checkout</a>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to display selected items
+        function displaySelectedItems() {
+            const selectedItemsDiv = document.getElementById('selectedItems');
+            selectedItemsDiv.innerHTML = ''; // Clear previous items
+
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'menu-item';
+                itemElement.innerHTML = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity}`;
+                selectedItemsDiv.appendChild(itemElement);
+            });
+        }
+
+        // Function to add selected item to the cart
+        function addToCart(item) {
+            const itemName = item.split(' - ')[0]; // Get the name of the item
+            const itemPrice = parseFloat(item.split(' - $')[1]); // Get the price of the item
+            const existingItem = cart.find(cartItem => cartItem.name === itemName);
+
+            if (existingItem) {
+                existingItem.quantity += 1; // Increase quantity if already in cart
+            } else {
+                cart.push({ name: itemName, price: itemPrice, quantity: 1 }); // Add new item to cart
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+            displaySelectedItems(); // Refresh selected items display
+        }
+
+        // Clear the cart on page load for testing purposes (remove in production)
+        window.onload = displaySelectedItems;
+    </script>
+</body>
+</html>
