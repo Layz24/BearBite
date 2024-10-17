@@ -1,0 +1,10 @@
+[
+    { "item_id": 1, "name": "Burger", "description": "Juicy beef burger", "image_url": "images/Burger.jpg", "price": 8.99 },
+    { "item_id": 2, "name": "Chinese Food", "description": "Delicious Chinese cuisine", "image_url": "images/Chinese_food.jpg", "price": 10.99 },
+    { "item_id": 3, "name": "Fried Basket", "description": "Crispy fried snacks", "image_url": "images/Fried_basket.jpg", "price": 12.99 },
+    { "item_id": 4, "name": "Fried Chicken", "description": "Golden fried chicken", "image_url": "images/Fried_chicken.jpg", "price": 9.99 },
+    { "item_id": 5, "name": "Ice Cream", "description": "Creamy vanilla ice cream", "image_url": "images/Ice_cream.jpg", "price": 5.99 },
+    { "item_id": 6, "name": "Jerk Chicken", "description": "Spicy jerk chicken", "image_url": "images/Jerk_chicken.jpg", "price": 13.99 },
+    { "item_id": 7, "name": "Nachos", "description": "Loaded nachos with cheese", "image_url": "images/Nachos.jpg", "price": 6.99 },
+    { "item_id": 8, "name": "Pizza", "description": "Cheesy pepperoni pizza", "image_url": "images/Pizza.jpg", "price": 10.99 }
+]
