@@ -5,12 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BearBite - Checkout</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .remove-btn {
+            margin-left: 15px;
+            cursor: pointer;
+            color: red;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <header>
-        <h1>BearBite Checkout</h1>
+        <nav class="navbar">
+            <h1>BearBite</h1>
+            <div class="nav-links">
+                <a href="order.html">Order Now</a>
+                <a href="checkout.html">Checkout</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
     </header>
 
+    <!-- Checkout Section -->
     <div class="container">
         <h2>Your Cart</h2>
         <div id="cartItems"></div>
@@ -18,18 +90,19 @@
         <button onclick="showPopUp()">Confirm Order</button>
     </div>
 
+    <!-- Popup for Confirm Order -->
     <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close" onclick="closePopUp()">&times;</span>
             <h2>A dasher has been assigned!</h2>
             <img src="images/food_delivery.gif" alt="Delivery in progress" class="map-image">
-            <button onclick="confirmOrder()">Confirm</button> <!-- Add a Confirm button -->
+            <button onclick="confirmOrder()">Confirm</button>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Function to display items in the cart
+        // Function to display items in the cart with images
         function displayCart() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const cartItemsDiv = document.getElementById('cartItems');
@@ -37,13 +110,35 @@
             cartItemsDiv.innerHTML = '';
             let total = 0;
 
+            const imageMap = {
+                'pizza': 'images/Pizza.jpg',
+                'burger': 'images/Burger.jpg',
+                'sushi': 'images/Sushi.jpg',
+                'salad': 'images/Salad.jpg',
+                'chinese_food': 'images/Chinese_food.jpg',
+                'ice_cream': 'images/Ice_cream.jpg',
+                'nachos': 'images/Nachos.jpg',
+                'fried_basket': 'images/Fried_basket.jpg',
+                'fried_chicken': 'images/Fried_chicken.jpg'
+
+            };
+
             cart.forEach((item, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
+
+                // Normalize the item name to map it correctly to the imageMap
+                const normalizedItemName = item.name.toLowerCase().replace(/\s/g, '_');
+
+                // Get the image based on the normalized item's name
+                const imageSrc = imageMap[normalizedItemName] || 'images/default.jpg';
+
                 itemDiv.innerHTML = `
-                    <div class="menu-item" onclick="removeFromCart(${index})">
+                    <img src="${imageSrc}" alt="${item.name}">
+                    <div>
                         ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}
                     </div>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
                 `;
                 cartItemsDiv.appendChild(itemDiv);
                 total += item.price * item.quantity;
@@ -62,11 +157,20 @@
 
         // Function to confirm the order
         function confirmOrder() {
-            // Clear the cart
-            localStorage.removeItem('cart');
+            localStorage.removeItem('cart'); // Clear the cart
             displayCart(); // Refresh the cart display
             closePopUp(); // Close the popup
-            alert('Your order has been confirmed!'); // Optional: Show confirmation message
+            alert('Your order has been confirmed!');
+        }
+
+        // Function to show the pop-up
+        function showPopUp() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Function to close the pop-up
+        function closePopUp() {
+            document.getElementById('popup').style.display = 'none';
         }
 
         // Call displayCart on page load
